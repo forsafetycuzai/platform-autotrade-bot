@@ -1,0 +1,18 @@
+{
+  "name": "crypto-autotrade-bot",
+  "version": "1.0.0",
+  "description": "Secure local proxy server for Binance paper/live trading bot",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.3.1",
+    "node-fetch": "^2.7.0",
+    "crypto": "^1.0.1"
+  }
+}
