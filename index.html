@@ -423,6 +423,7 @@ body.light .and-pill span{background:#dcfce7;color:#15803d}
 
       <div class="btnrow">
         <button class="pri" id="btn-toggle">Stop Bot</button>
+        <button id="btn-test-trade" onclick="testTrade()" style="font-size:12px;padding:7px 14px;border-radius:7px;border:1px solid #7c3aed;background:#1a0d3a;color:#a78bfa;cursor:pointer;font-family:inherit" title="Paper mode only — forces a BUY then SELL to show B/S markers">🧪 Test Trade</button>
         <button class="dan" onclick="document.getElementById('log').innerHTML=''">Clear Log</button>
       </div>
     </div>
@@ -1925,6 +1926,34 @@ function toggleEMA(period){
     btn.style.fontWeight = '700';
   }
   draw();
+}
+
+// ═══════════════════════════ TEST TRADE ═══════════════════════════
+function testTrade(){
+  if(tradeMode !== 'paper'){
+    log('⚠️ Test Trade is paper mode only.','warn'); return;
+  }
+  if(state === S.INPOS){
+    log('⚠️ Already in position — exit first.','warn'); return;
+  }
+  const current = liveCandle || (candles.length ? candles[candles.length-1] : null);
+  if(!current){ log('No price data yet.','warn'); return; }
+
+  const price = current.c;
+  log('🧪 Test Trade: forcing BUY now…','info');
+
+  // Force entry
+  const prevState = state;
+  state = S.BUYNEXT;
+  enterLong(price);
+
+  // Force exit after 4 seconds at +0.5%
+  setTimeout(()=>{
+    if(state !== S.INPOS) return;
+    const exitPrice = entryPrice * 1.005;
+    log('🧪 Test Trade: forcing SELL now…','info');
+    exitPos(exitPrice, 'Test Exit');
+  }, 4000);
 }
 
 // ═══════════════════════════ BOOT ═════════════════════════════════
