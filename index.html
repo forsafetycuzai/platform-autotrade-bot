@@ -957,12 +957,14 @@ function addRule(side){
   if(side==='entry') entryRules.push(rule);
   else               exitRules.push(rule);
   renderRules();
+  buildIfThenPreview();
 }
 
 function removeRule(side, id){
   if(side==='entry') entryRules = entryRules.filter(r=>r.id!==id);
   else               exitRules  = exitRules.filter(r=>r.id!==id);
   renderRules();
+  buildIfThenPreview();
 }
 
 function indOptions(selectedKey){
@@ -1068,6 +1070,7 @@ function openStratBuilder(){
   document.getElementById('strat-overlay').style.display='block';
   document.body.style.overflow='hidden';
   renderRules();
+  setTimeout(buildIfThenPreview, 50);
 }
 function closeStratBuilder(){
   document.getElementById('strat-overlay').style.display='none';
@@ -1768,22 +1771,6 @@ function buildIfThenPreview(){
   container.innerHTML = html;
 }
 
-// Update IF/THEN preview whenever overlay is opened or rules change
-const _origOpenStrat = openStratBuilder;
-function openStratBuilder(){
-  _origOpenStrat();
-  setTimeout(buildIfThenPreview, 50);
-}
-const _origAddRule = addRule;
-function addRule(side){
-  _origAddRule(side);
-  buildIfThenPreview();
-}
-const _origRemoveRule = removeRule;
-function removeRule(side, id){
-  _origRemoveRule(side, id);
-  buildIfThenPreview();
-}
 
 // ═══════════════════════════ RSI SUBPLOT ══════════════════════════
 function drawRSI(){
