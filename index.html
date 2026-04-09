@@ -225,7 +225,14 @@ body.light .and-pill span{background:#dcfce7;color:#15803d}
 
 /* OVERLAY */
 #strat-overlay{background:var(--overlay-bg)}
-#my-strats-overlay{background:var(--overlay-bg)}
+
+/* TABS */
+.tab-bar{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:12px}
+.tab-btn{font-size:13px;font-weight:600;padding:9px 18px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;white-space:nowrap}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#3b82f6;border-bottom-color:#3b82f6}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
 
 /* SAVED STRATEGY CARDS */
 .strat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:4px}
@@ -374,15 +381,20 @@ body.light .strat-load-btn{background:#dbeafe;color:#1d4ed8}
         <button onclick="openStratBuilder()" style="width:100%;font-size:13px;padding:9px;border-radius:8px;border:1px solid #3b82f6;color:#60a5fa;background:#0d1e3a;cursor:pointer;font-family:inherit;font-weight:600;transition:all .15s;margin-bottom:6px" onmouseover="this.style.background='#1e3a5f'" onmouseout="this.style.background='#0d1e3a'">
           ⚡ Strategy Builder
         </button>
-        <button onclick="openMyStrategies()" style="width:100%;font-size:12px;padding:7px;border-radius:8px;border:1px solid var(--border2);color:var(--text2);background:transparent;cursor:pointer;font-family:inherit;transition:all .15s" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background='transparent'">
-          📚 My Strategies <span id="my-strats-count" style="font-size:10px;color:var(--text3)"></span>
-        </button>
       </div>
 
     </div>
 
     <!-- RIGHT PANEL -->
     <div>
+      <!-- TAB BAR -->
+      <div class="tab-bar">
+        <button class="tab-btn active" id="tab-btn-chart"     onclick="switchTab('chart')">📊 Chart</button>
+        <button class="tab-btn"        id="tab-btn-strategies" onclick="switchTab('strategies')">📚 My Strategies <span id="my-strats-count" style="font-size:10px;opacity:.7"></span></button>
+      </div>
+
+      <!-- TAB: CHART -->
+      <div class="tab-pane active" id="tab-chart">
       <div class="wbox">⚠️ Paper trading — no real funds used.</div>
 
       <div class="card">
@@ -455,7 +467,19 @@ body.light .strat-load-btn{background:#dbeafe;color:#1d4ed8}
         <button id="btn-test-trade" onclick="testTrade()" style="font-size:12px;padding:7px 14px;border-radius:7px;border:1px solid #7c3aed;background:#1a0d3a;color:#a78bfa;cursor:pointer;font-family:inherit" title="Paper mode only — forces a BUY then SELL to show B/S markers">🧪 Test Trade</button>
         <button class="dan" onclick="document.getElementById('log').innerHTML=''">Clear Log</button>
       </div>
-    </div>
+      </div><!-- end tab-chart -->
+
+      <!-- TAB: MY STRATEGIES -->
+      <div class="tab-pane" id="tab-strategies">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+          <input type="text" id="ms-search" oninput="renderMyStrategies()" placeholder="🔍  Search strategies…"
+            style="flex:1;min-width:160px;font-size:13px;padding:8px 12px;border:1px solid var(--border);border-radius:9px;background:var(--input-bg);color:var(--text);outline:none;font-family:inherit">
+          <button onclick="openStratBuilder()" style="font-size:12px;padding:8px 15px;border-radius:8px;border:1px solid #3b82f6;background:#0d1e3a;color:#60a5fa;cursor:pointer;font-family:inherit;font-weight:600;white-space:nowrap">+ New Strategy</button>
+        </div>
+        <div id="ms-grid" class="strat-grid"></div>
+      </div><!-- end tab-strategies -->
+
+    </div><!-- end right panel -->
 
   </div>
 <!-- ═══════ STRATEGY BUILDER OVERLAY ═══════ -->
@@ -577,27 +601,6 @@ body.light .strat-load-btn{background:#dbeafe;color:#1d4ed8}
 </div>
 
 <!-- ═══════ MY STRATEGIES OVERLAY ═══════ -->
-<div id="my-strats-overlay" style="display:none;position:fixed;inset:0;z-index:1100;overflow-y:auto;background:var(--overlay-bg)">
-  <div style="max-width:960px;margin:0 auto;padding:1.5rem">
-
-    <!-- Header -->
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)">
-      <button onclick="closeMyStrategies()" style="font-size:13px;padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:inherit">← Back</button>
-      <h2 style="font-size:18px;font-weight:700;color:var(--text)">📚 My Strategies</h2>
-      <span id="ms-count-badge" style="font-size:11px;color:var(--text3);background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:2px 9px"></span>
-      <button onclick="openStratBuilder();closeMyStrategies()" style="margin-left:auto;font-size:13px;padding:7px 16px;border-radius:8px;border:1px solid #3b82f6;background:#0d1e3a;color:#60a5fa;cursor:pointer;font-family:inherit;font-weight:600">+ New Strategy</button>
-    </div>
-
-    <!-- Search bar -->
-    <div style="margin-bottom:16px">
-      <input type="text" id="ms-search" oninput="renderMyStrategies()" placeholder="🔍  Search by name or description…"
-        style="width:100%;font-size:13px;padding:9px 12px;border:1px solid var(--border);border-radius:9px;background:var(--input-bg);color:var(--text);outline:none;font-family:inherit">
-    </div>
-
-    <!-- Cards grid -->
-    <div id="ms-grid" class="strat-grid"></div>
-  </div>
-</div>
 
 <script>
 'use strict';
@@ -1982,12 +1985,9 @@ function persistStrategies(arr){
   updateStratCountBadge();
 }
 function updateStratCountBadge(){
-  const arr = loadSavedStrategies();
-  const n = arr.length;
+  const n = loadSavedStrategies().length;
   const badge = document.getElementById('my-strats-count');
-  const msBadge = document.getElementById('ms-count-badge');
   if(badge) badge.textContent = n ? `(${n})` : '';
-  if(msBadge) msBadge.textContent = n ? `${n} saved` : 'none saved';
 }
 
 function saveStrategy(){
@@ -2079,19 +2079,20 @@ function loadStrategy(id){
 
   renderRules();
   buildIfThenPreview();
-  closeMyStrategies();
+  switchTab('chart');
   openStratBuilder();
   log(`📂 Loaded strategy "${s.name}".`, 'info');
 }
 
-function openMyStrategies(){
-  renderMyStrategies();
-  document.getElementById('my-strats-overlay').style.display = 'block';
-  document.body.style.overflow = 'hidden';
-}
-function closeMyStrategies(){
-  document.getElementById('my-strats-overlay').style.display = 'none';
-  document.body.style.overflow = '';
+function openMyStrategies(){ switchTab('strategies'); }
+function closeMyStrategies(){ switchTab('chart'); }
+
+function switchTab(name){
+  ['chart','strategies'].forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('active', t===name);
+    document.getElementById('tab-btn-'+t).classList.toggle('active', t===name);
+  });
+  if(name==='strategies') renderMyStrategies();
 }
 
 function renderMyStrategies(){
