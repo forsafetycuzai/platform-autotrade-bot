@@ -258,38 +258,141 @@ body.light .strat-load-btn{background:#dbeafe;color:#1d4ed8}
 .strat-del-btn{font-size:11px;padding:5px 10px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--text4);cursor:pointer;font-family:inherit;transition:all .15s}
 .strat-del-btn:hover{border-color:#dc2626;color:#f87171}
 .strat-empty{text-align:center;padding:3rem 1rem;color:var(--text4);font-size:13px}
+
+/* ── APP SHELL ── */
+body{display:flex;height:100vh;overflow:hidden}
+.main-content{flex:1;height:100vh;overflow-y:auto;background:var(--bg)}
+.page{display:none;min-height:100vh}
+.page.active{display:block}
+#page-bot-builder.page.active{display:block}
+#page-bot-builder .app{max-width:1260px}
+
+/* ── SIDEBAR ── */
+.sidebar{width:210px;flex-shrink:0;height:100vh;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;transition:background .2s}
+.sidebar-brand{padding:1.1rem 1rem .9rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px}
+.sidebar-logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#3b82f6 0%,#7c3aed 100%);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.sidebar-brand-text{line-height:1.25}
+.sidebar-brand-text .t1{font-size:13px;font-weight:800;color:var(--text)}
+.sidebar-brand-text .t2{font-size:10px;color:var(--text4)}
+.sidebar-nav{flex:1;padding:.6rem .55rem;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;padding:9px 11px;border-radius:9px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-family:inherit;text-align:left;transition:all .15s;width:100%;white-space:nowrap}
+.nav-item:hover{background:var(--bg3);color:var(--text2)}
+.nav-item.active{background:#1e3a5f;color:#60a5fa}
+body.light .nav-item.active{background:#dbeafe;color:#1d4ed8}
+.nav-icon{font-size:15px;width:18px;text-align:center;flex-shrink:0}
+.nav-section{font-size:9px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:.1em;padding:10px 12px 4px}
+.sidebar-bottom{padding:.75rem .7rem;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px}
+.sidebar-status-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.sidebar-mode-row{display:flex;align-items:center;gap:5px;margin-top:2px}
+
+/* ── DASHBOARD PAGE ── */
+.dash-page{padding:1.5rem;max-width:1260px}
+.dash-topbar{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:1.4rem}
+.dash-title-block .dt-main{font-size:21px;font-weight:800;color:var(--text)}
+.dash-title-block .dt-sub{font-size:13px;color:var(--text3);margin-top:2px}
+.dash-section-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;margin-top:1.2rem}
+
+/* ── PORTFOLIO TABLE ── */
+.portfolio-wrap{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.portfolio-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.portfolio-tbl th{background:var(--bg2);font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;padding:11px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+.portfolio-tbl td{padding:13px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:middle}
+.portfolio-tbl tr:last-child td{border-bottom:none}
+.portfolio-tbl tbody tr:hover td{background:var(--bg2);transition:background .1s}
+.bot-name{font-weight:700;color:var(--text);font-size:13px}
+.bot-badge{font-size:10px;font-weight:600;padding:1px 7px;border-radius:5px;background:#0d1e3a;color:#60a5fa;border:1px solid #1e3a5f;margin-left:6px;vertical-align:middle}
+body.light .bot-badge{background:#dbeafe;color:#1d4ed8;border-color:#bfdbfe}
+.pnl-pos{color:#16a34a;font-weight:700}
+.pnl-neg{color:#dc2626;font-weight:700}
+.pnl-zero{color:var(--text4)}
+.status-pill-run{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;border:1px solid #22c55e;background:#0d2a0d;color:#4ade80;cursor:pointer;font-family:inherit;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
+.status-pill-run:hover{background:#14532d}
+.status-pill-stop{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--text3);cursor:pointer;font-family:inherit;transition:all .15s}
+.status-pill-stop:hover{border-color:#dc2626;color:#f87171}
+.status-pill-active{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;border:1px solid #3b82f6;background:#0d1e3a;color:#60a5fa;display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-family:inherit}
+.status-pill-active:hover{background:#1e3a5f}
+body.light .status-pill-run{background:#dcfce7;color:#15803d;border-color:#16a34a}
+body.light .status-pill-active{background:#dbeafe;color:#1d4ed8;border-color:#3b82f6}
+.tbl-empty{text-align:center;padding:3.5rem 1rem;color:var(--text4)}
+
+/* ── INDICATOR BUILDER PAGE ── */
+.ind-page{padding:1.5rem;max-width:900px}
+.ind-page .card{margin-bottom:12px}
 </style>
 </head>
 <body>
-<div class="app">
 
-  <div class="header">
-    <div class="dot" id="status-dot"></div>
-    <h1>Crypto AutoTrade Bot</h1>
-    <span class="badge g" id="status-badge">RUNNING</span>
-    <span class="badge b" id="mode-badge">PAPER</span>
-    <div class="ws-row"><span id="ws-dot"></span>Live Data</div>
-    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle light/dark">🌙</button>
-    <span id="clock"></span>
+<!-- ═══════ SIDEBAR ═══════ -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="sidebar-logo">🤖</div>
+    <div class="sidebar-brand-text">
+      <div class="t1">AutoTrade</div>
+      <div class="t2">Bot Platform</div>
+    </div>
   </div>
 
-  <!-- MODE BAR -->
-  <div class="mode-bar">
-    <span class="mode-lbl">Trading Mode:</span>
-    <div class="mode-switch">
-      <button id="btn-paper" class="active-paper" onclick="setMode('paper')">📋 Paper</button>
-      <button id="btn-live" onclick="setMode('live')">⚡ Live</button>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <button class="nav-item active" id="nav-dashboard" onclick="showPage('dashboard')">
+      <span class="nav-icon">📊</span> Dashboard
+    </button>
+    <button class="nav-item" id="nav-bot-builder" onclick="showPage('bot-builder')">
+      <span class="nav-icon">🤖</span> Bot Builder
+    </button>
+    <button class="nav-item" id="nav-strategies" onclick="showPage('strategies')">
+      <span class="nav-icon">📚</span> Strategies
+      <span id="nav-strats-count" style="margin-left:auto;font-size:10px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:1px 6px;color:var(--text4)"></span>
+    </button>
+    <div class="nav-section" style="margin-top:6px">Tools</div>
+    <button class="nav-item" id="nav-indicators" onclick="showPage('indicators')">
+      <span class="nav-icon">📈</span> Indicator Builder
+    </button>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <div class="sidebar-status-row">
+      <span id="srv-dot" style="width:7px;height:7px;border-radius:50%;background:#ef4444;display:inline-block;flex-shrink:0"></span>
+      <span id="srv-txt" style="font-size:10px;color:var(--text4)">Server offline</span>
     </div>
-    <div class="server-status">
-      <span id="srv-dot"></span>
-      <span id="srv-txt">Server: not connected</span>
+    <div class="sidebar-mode-row">
+      <div class="mode-switch" style="flex:1">
+        <button id="btn-paper" class="active-paper" onclick="setMode('paper')">📋 Paper</button>
+        <button id="btn-live" onclick="setMode('live')">⚡ Live</button>
+      </div>
+      <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
     </div>
-    <div id="live-warning" style="display:none;font-size:11px;color:#dc2626;font-weight:600">⚠️ LIVE — Real funds at risk</div>
-    <button id="btn-test-conn" onclick="testConnection()" style="display:none;font-size:11px;padding:4px 11px;border-radius:6px;border:1px solid #1e2640;background:transparent;color:#94a3b8;cursor:pointer;font-family:inherit">🔌 Test Connection</button>
-    <div id="live-balance" style="display:none;font-size:11px;color:#4ade80;font-weight:600"></div>
+    <div id="live-warning" style="display:none;font-size:10px;color:#f87171;font-weight:600">⚠️ LIVE — Real funds at risk</div>
+    <div id="live-balance" style="display:none;font-size:11px;color:#4ade80;font-weight:700"></div>
+  </div>
+</aside>
+
+<!-- ═══════ MAIN CONTENT ═══════ -->
+<div class="main-content">
+
+<!-- ══ PAGE: DASHBOARD ══ -->
+<div class="page active" id="page-dashboard">
+<div class="dash-page">
+
+  <div class="dash-topbar">
+    <div class="dash-title-block">
+      <div class="dt-main">รายการบอทของคุณ (Bot Portfolio)</div>
+      <div class="dt-sub">Monitor all your running strategies and their performance</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)">
+        <span id="ws-dot" style="width:7px;height:7px;border-radius:50%;background:#ef4444;display:inline-block"></span>Live Data
+      </div>
+      <span id="mode-badge" class="badge b">PAPER</span>
+      <span id="status-badge" class="badge g">RUNNING</span>
+      <span id="status-dot" class="dot" style="display:none"></span>
+      <div id="btn-test-conn" onclick="testConnection()" style="display:none;font-size:11px;padding:4px 11px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text3);cursor:pointer">🔌 Test</div>
+      <span id="clock" style="font-size:11px;color:var(--text4)"></span>
+    </div>
   </div>
 
-  <div class="metrics">
+  <!-- Metrics row -->
+  <div class="metrics" style="margin-bottom:1.2rem">
     <div class="metric"><label>Portfolio</label><div class="v" id="m-port">$10,000.00</div></div>
     <div class="metric"><label>Unrealized P&amp;L</label><div class="v" id="m-upnl">—</div></div>
     <div class="metric"><label>Realized P&amp;L</label><div class="v up" id="m-rpnl">$0.00</div></div>
@@ -297,6 +400,46 @@ body.light .strat-load-btn{background:#dbeafe;color:#1d4ed8}
     <div class="metric"><label>Trades</label><div class="v" id="m-trades">0</div></div>
   </div>
 
+  <div class="dash-section-label" style="margin-top:0">Active Bots</div>
+  <div class="portfolio-wrap">
+    <table class="portfolio-tbl">
+      <thead>
+        <tr>
+          <th>ชื่อ BOT</th>
+          <th>Pair / TF</th>
+          <th>รายวัน (1D)</th>
+          <th>รายสัปดาห์ (7D)</th>
+          <th>รายเดือน (30D)</th>
+          <th>ทั้งหมด (All Time)</th>
+          <th>Trades</th>
+          <th>สถานะ</th>
+        </tr>
+      </thead>
+      <tbody id="portfolio-body">
+        <tr><td colspan="8" class="tbl-empty">
+          <div style="font-size:2rem;margin-bottom:8px">🤖</div>
+          <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:4px">No bots running yet</div>
+          <div>Go to <b>Bot Builder</b> to create and activate a strategy.</div>
+        </td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Recent trades section -->
+  <div class="dash-section-label">Recent Trades</div>
+  <div class="portfolio-wrap">
+    <table class="portfolio-tbl" id="dash-trades-tbl">
+      <thead><tr><th>BOT</th><th>Pair</th><th>Lot</th><th>Entry</th><th>Exit</th><th>Size</th><th>P&amp;L $</th><th>P&amp;L %</th><th>Result</th></tr></thead>
+      <tbody id="dash-trades-body"><tr><td colspan="9" class="tbl-empty" style="padding:1.5rem">No trades yet</td></tr></tbody>
+    </table>
+  </div>
+
+</div>
+</div><!-- end page-dashboard -->
+
+<!-- ══ PAGE: BOT BUILDER ══ -->
+<div class="page" id="page-bot-builder">
+<div class="app">
   <div class="layout">
 
     <!-- LEFT PANEL -->
@@ -387,14 +530,7 @@ body.light .strat-load-btn{background:#dbeafe;color:#1d4ed8}
 
     <!-- RIGHT PANEL -->
     <div>
-      <!-- TAB BAR -->
-      <div class="tab-bar">
-        <button class="tab-btn active" id="tab-btn-chart"     onclick="switchTab('chart')">📊 Chart</button>
-        <button class="tab-btn"        id="tab-btn-strategies" onclick="switchTab('strategies')">📚 My Strategies <span id="my-strats-count" style="font-size:10px;opacity:.7"></span></button>
-      </div>
-
-      <!-- TAB: CHART -->
-      <div class="tab-pane active" id="tab-chart">
+      <div id="tab-chart">
       <div class="wbox">⚠️ Paper trading — no real funds used.</div>
 
       <div class="card">
@@ -469,19 +605,84 @@ body.light .strat-load-btn{background:#dbeafe;color:#1d4ed8}
       </div>
       </div><!-- end tab-chart -->
 
-      <!-- TAB: MY STRATEGIES -->
-      <div class="tab-pane" id="tab-strategies">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px">
-          <input type="text" id="ms-search" oninput="renderMyStrategies()" placeholder="🔍  Search strategies…"
-            style="flex:1;min-width:160px;font-size:13px;padding:8px 12px;border:1px solid var(--border);border-radius:9px;background:var(--input-bg);color:var(--text);outline:none;font-family:inherit">
-          <button onclick="openStratBuilder()" style="font-size:12px;padding:8px 15px;border-radius:8px;border:1px solid #3b82f6;background:#0d1e3a;color:#60a5fa;cursor:pointer;font-family:inherit;font-weight:600;white-space:nowrap">+ New Strategy</button>
-        </div>
-        <div id="ms-grid" class="strat-grid"></div>
-      </div><!-- end tab-strategies -->
-
     </div><!-- end right panel -->
 
+  </div><!-- end .layout -->
+</div><!-- end .app -->
+</div><!-- end page-bot-builder -->
+
+<!-- ══ PAGE: STRATEGIES ══ -->
+<div class="page" id="page-strategies">
+<div class="dash-page">
+  <div class="dash-topbar">
+    <div class="dash-title-block">
+      <div class="dt-main">📚 My Strategies</div>
+      <div class="dt-sub">All your saved strategies — load, edit or delete</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <input type="text" id="ms-search" oninput="renderMyStrategies()" placeholder="🔍  Search…"
+        style="font-size:13px;padding:8px 13px;border:1px solid var(--border);border-radius:9px;background:var(--input-bg);color:var(--text);outline:none;font-family:inherit;width:220px">
+      <button onclick="showPage('bot-builder');openStratBuilder()" style="font-size:13px;padding:8px 18px;border-radius:9px;border:1px solid #3b82f6;background:#0d1e3a;color:#60a5fa;cursor:pointer;font-family:inherit;font-weight:700">+ New Strategy</button>
+    </div>
   </div>
+  <div id="ms-grid" class="strat-grid"></div>
+</div>
+</div><!-- end page-strategies -->
+
+<!-- ══ PAGE: INDICATORS ══ -->
+<div class="page" id="page-indicators">
+<div class="ind-page">
+  <div class="dash-topbar" style="margin-bottom:1rem">
+    <div class="dash-title-block">
+      <div class="dt-main">📈 Indicator Builder</div>
+      <div class="dt-sub">Configure Bollinger Bands, EMA overlays and RSI for your charts</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ctitle">📊 Bollinger Bands</div>
+    <div class="sr">
+      <label>Period</label>
+      <input type="range" min="5" max="50" value="20" step="1" id="bb-per2">
+      <span class="sv" id="bb-per-v2">20</span>
+    </div>
+    <div class="sr">
+      <label>Std Dev</label>
+      <input type="range" min="1" max="4" value="2" step="0.5" id="bb-std2">
+      <span class="sv" id="bb-std-v2">2.0</span>
+    </div>
+    <div class="hint" style="margin-top:6px">Changes apply to the chart in Bot Builder immediately.</div>
+  </div>
+
+  <div class="card">
+    <div class="ctitle">📈 EMA Overlays</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <button class="chip" id="ema-9-btn2"   onclick="toggleEMA(9)"   style="color:#f59e0b;border-color:#f59e0b;font-size:13px;padding:6px 14px">EMA 9</button>
+      <button class="chip" id="ema-20-btn2"  onclick="toggleEMA(20)"  style="color:#3b82f6;border-color:#3b82f6;font-size:13px;padding:6px 14px">EMA 20</button>
+      <button class="chip" id="ema-50-btn2"  onclick="toggleEMA(50)"  style="color:#a78bfa;border-color:#a78bfa;font-size:13px;padding:6px 14px">EMA 50</button>
+      <button class="chip" id="ema-200-btn2" onclick="toggleEMA(200)" style="color:#f87171;border-color:#f87171;font-size:13px;padding:6px 14px">EMA 200</button>
+    </div>
+    <div class="hint" style="margin-top:8px">Toggle lines on/off. Active lines appear on the Bot Builder chart.</div>
+  </div>
+
+  <div class="card">
+    <div class="ctitle">📉 RSI</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:8px">RSI(14) subplot is always shown below the chart in Bot Builder.</div>
+    <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text3)">
+      <span style="display:inline-block;width:14px;height:3px;background:#a78bfa;border-radius:2px"></span> RSI Line &nbsp;
+      <span style="display:inline-block;width:14px;height:3px;background:rgba(239,68,68,.4);border-radius:2px"></span> Overbought (70) &nbsp;
+      <span style="display:inline-block;width:14px;height:3px;background:rgba(34,197,94,.4);border-radius:2px"></span> Oversold (30)
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ctitle">⚡ Quick Preview</div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:8px">Go to Bot Builder to see all indicators on the live chart.</div>
+    <button onclick="showPage('bot-builder')" style="font-size:13px;padding:8px 18px;border-radius:9px;border:1px solid #3b82f6;background:#0d1e3a;color:#60a5fa;cursor:pointer;font-family:inherit;font-weight:700">→ Open Bot Builder</button>
+  </div>
+</div>
+</div><!-- end page-indicators -->
+
 <!-- ═══════ STRATEGY BUILDER OVERLAY ═══════ -->
 <div id="strat-overlay" style="display:none;position:fixed;inset:0;background:#0b0e1a;z-index:1000;overflow-y:auto">
   <div style="max-width:860px;margin:0 auto;padding:1.5rem">
@@ -1559,13 +1760,12 @@ document.getElementById('tp-pct').addEventListener('input',function(){
 
 document.getElementById('btn-toggle').addEventListener('click',function(){
   running=!running;
-  const dot2=document.getElementById('status-dot');
   const badge=document.getElementById('status-badge');
   if(running){
-    dot2.className='dot'; badge.className='badge g'; badge.textContent='RUNNING';
+    badge.className='badge g'; badge.textContent='RUNNING';
     this.textContent='Stop Bot'; this.className='pri'; log('Bot resumed.','info');
   } else {
-    dot2.className='dot off'; badge.className='badge r'; badge.textContent='STOPPED';
+    badge.className='badge r'; badge.textContent='STOPPED';
     this.textContent='Start Bot'; this.className='suc'; log('Bot stopped.','warn');
   }
 });
@@ -2079,21 +2279,14 @@ function loadStrategy(id){
 
   renderRules();
   buildIfThenPreview();
-  switchTab('chart');
+  showPage('bot-builder');
   openStratBuilder();
   log(`📂 Loaded strategy "${s.name}".`, 'info');
 }
 
-function openMyStrategies(){ switchTab('strategies'); }
-function closeMyStrategies(){ switchTab('chart'); }
-
-function switchTab(name){
-  ['chart','strategies'].forEach(t => {
-    document.getElementById('tab-'+t).classList.toggle('active', t===name);
-    document.getElementById('tab-btn-'+t).classList.toggle('active', t===name);
-  });
-  if(name==='strategies') renderMyStrategies();
-}
+function openMyStrategies(){ showPage('strategies'); }
+function closeMyStrategies(){ showPage('bot-builder'); }
+function switchTab(name){ if(name==='strategies') showPage('strategies'); }
 
 function renderMyStrategies(){
   const grid = document.getElementById('ms-grid');
@@ -2180,18 +2373,173 @@ function testTrade(){
   }, 4000);
 }
 
+// ═══════════════════════════ PAGE NAVIGATION ══════════════════════
+function showPage(name){
+  ['dashboard','bot-builder','strategies','indicators'].forEach(p=>{
+    document.getElementById('page-'+p).classList.toggle('active', p===name);
+    const nav = document.getElementById('nav-'+p);
+    if(nav) nav.classList.toggle('active', p===name);
+  });
+  if(name==='strategies') renderMyStrategies();
+  if(name==='bot-builder') setTimeout(draw,50);
+}
+
+// ═══════════════════════════ DASHBOARD PORTFOLIO TABLE ════════════
+// botStats: keyed by stratName, stores {pnl1d,pnl7d,pnl30d,pnlAll,trades,running}
+const botStats = {};
+
+function recordTradeToDashboard(stratName, sym, tf, pnlUSD, lot, entryPx, exitPx, size, pnlPct, reason){
+  if(!stratName) return;
+  if(!botStats[stratName]) botStats[stratName] = {sym, tf, pnl1d:0, pnl7d:0, pnl30d:0, pnlAll:0, trades:0, running:true};
+  const b = botStats[stratName];
+  b.pnl1d  += pnlUSD;
+  b.pnl7d  += pnlUSD;
+  b.pnl30d += pnlUSD;
+  b.pnlAll += pnlUSD;
+  b.trades++;
+  b.sym = sym; b.tf = tf;
+  renderPortfolioTable();
+  addDashTradeRow(stratName, sym, lot, entryPx, exitPx, size, pnlUSD, pnlPct, reason);
+}
+
+function renderPortfolioTable(){
+  const tbody = document.getElementById('portfolio-body');
+  if(!tbody) return;
+  const keys = Object.keys(botStats);
+  if(!keys.length){
+    tbody.innerHTML=`<tr><td colspan="8" class="tbl-empty">
+      <div style="font-size:2rem;margin-bottom:8px">🤖</div>
+      <div style="font-size:14px;font-weight:600;color:var(--text2);margin-bottom:4px">No bots running yet</div>
+      <div>Go to <b>Bot Builder</b> → apply a strategy to start.</div>
+    </td></tr>`;
+    return;
+  }
+  tbody.innerHTML = keys.map(name=>{
+    const b = botStats[name];
+    const pf = v=> v>0?`<span class="pnl-pos">+$${v.toFixed(2)}</span>`
+                  : v<0?`<span class="pnl-neg">-$${Math.abs(v).toFixed(2)}</span>`
+                  : `<span class="pnl-zero">$0.00</span>`;
+    const statusBtn = b.running
+      ? `<button class="status-pill-active" onclick="toggleBotRunning('${name}')"><span style="width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block"></span> Running</button>`
+      : `<button class="status-pill-stop"  onclick="toggleBotRunning('${name}')">Stop</button>`;
+    return `<tr>
+      <td><span class="bot-name">${esc(name)}</span><span class="bot-badge">${b.sym}</span></td>
+      <td style="color:var(--text3);font-size:12px">${b.sym}/USDT <span style="color:var(--text4)">·</span> ${b.tf}</td>
+      <td>${pf(b.pnl1d)}</td>
+      <td>${pf(b.pnl7d)}</td>
+      <td>${pf(b.pnl30d)}</td>
+      <td>${pf(b.pnlAll)}</td>
+      <td style="color:var(--text3)">${b.trades}</td>
+      <td>${statusBtn}</td>
+    </tr>`;
+  }).join('');
+}
+
+function toggleBotRunning(name){
+  if(!botStats[name]) return;
+  botStats[name].running = !botStats[name].running;
+  if(!botStats[name].running && state===S.INPOS){
+    log(`Bot "${name}" stopped.`,'warn');
+    running = false;
+    document.getElementById('status-badge').className='badge r';
+    document.getElementById('status-badge').textContent='STOPPED';
+  }
+  renderPortfolioTable();
+}
+
+function addDashTradeRow(botName, sym, lot, entryPx, exitPx, size, pnlUSD, pnlPct, reason){
+  const tbody = document.getElementById('dash-trades-body');
+  if(!tbody) return;
+  if(tbody.rows.length===1 && tbody.rows[0].cells.length===1) tbody.innerHTML='';
+  const win = pnlUSD >= 0;
+  const pS  = (win?'+$':'-$')+Math.abs(pnlUSD).toFixed(2);
+  const pP  = (pnlPct>=0?'+':'')+( pnlPct*100).toFixed(2)+'%';
+  const row = document.createElement('tr');
+  row.innerHTML=`
+    <td><span class="bot-name" style="font-size:12px">${esc(botName)}</span></td>
+    <td>${sym}/USDT</td>
+    <td style="color:#60a5fa;font-weight:600">${lot}</td>
+    <td>$${f(entryPx)}</td>
+    <td>$${f(exitPx)}</td>
+    <td>$${size}</td>
+    <td class="${win?'pnl-pos':'pnl-neg'}">${pS}</td>
+    <td class="${win?'pnl-pos':'pnl-neg'}">${pP}</td>
+    <td class="${reason!=='SL'?(win?'pnl-pos':''):'pnl-neg'}">${reason}</td>`;
+  tbody.insertBefore(row, tbody.firstChild);
+  if(tbody.rows.length>20) tbody.deleteRow(tbody.rows.length-1);
+}
+
+// ── Patch exitPos to also push to dashboard ───────────────────────
+const _origExitPos = exitPos;
+// Override after definition — safe because exitPos is a var declared as function
+// We wrap it after boot using a runtime patch below.
+
+// ═══════════════════════════ INDICATOR PAGE SYNC ══════════════════
+// Mirror bb-per / bb-std sliders to the indicator page copies
+function syncIndPage(){
+  const p2 = document.getElementById('bb-per2');
+  const s2 = document.getElementById('bb-std2');
+  if(p2){ p2.value = bbPeriod(); document.getElementById('bb-per-v2').textContent = bbPeriod(); }
+  if(s2){ s2.value = bbStd();    document.getElementById('bb-std-v2').textContent = bbStd().toFixed(1); }
+}
+function syncBBFromInd(){
+  document.getElementById('bb-per').value = document.getElementById('bb-per2').value;
+  document.getElementById('bb-std').value = document.getElementById('bb-std2').value;
+  document.getElementById('bb-per-v').textContent = document.getElementById('bb-per2').value;
+  document.getElementById('bb-std-v').textContent = (+document.getElementById('bb-std2').value).toFixed(1);
+  draw();
+}
+
+// ═══════════════════════════ COUNT BADGE IN NAV ═══════════════════
+function updateStratCountBadge(){
+  const n = loadSavedStrategies().length;
+  ['my-strats-count','nav-strats-count'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.textContent = n||'';
+  });
+}
+
 // ═══════════════════════════ BOOT ═════════════════════════════════
 buildGrid();
 updateExp();
 updateStratUI();
 renderRules();
 updateStratCountBadge();
-log('Bot started — build your strategy using the Strategy Builder on the left.','info');
+renderPortfolioTable();
+log('Bot started — build your strategy using the Strategy Builder.','info');
 log('Paper trading mode. Simulated data shown until Binance loads.','info');
 document.getElementById('clock').textContent=new Date().toLocaleTimeString();
 checkServer();
 setInterval(checkServer, 30000);
 init(activeSym,activeTF);
+
+// Indicator page slider wiring (after DOM ready)
+document.getElementById('bb-per2')?.addEventListener('input', syncBBFromInd);
+document.getElementById('bb-std2')?.addEventListener('input', syncBBFromInd);
+
+// Patch exitPos — capture values BEFORE _orig clears them
+(function(){
+  const _orig = exitPos;
+  exitPos = function(xp, reason){
+    // snapshot before _orig zeroes them out
+    const snapEntry   = entryPrice;
+    const snapSize    = posSize;
+    const snapLot     = currentLot;
+    const snapLots    = selectedLots;
+    const snapSym     = activeSym;
+    const snapTF      = activeTF;
+    const stratName   = (document.getElementById('strat-name')?.value||'').trim() || snapSym+'_bot';
+    _orig(xp, reason);
+    if(snapEntry){
+      const pnlPct = (xp - snapEntry) / snapEntry;
+      const pnlUSD = snapSize * pnlPct;
+      recordTradeToDashboard(stratName, snapSym, snapTF, pnlUSD,
+        `ไม้${snapLot}/${snapLots}`, snapEntry, xp, snapSize, pnlPct, reason);
+    }
+  };
+})();
+
 </script>
+</div><!-- end main-content -->
 </body>
 </html>
