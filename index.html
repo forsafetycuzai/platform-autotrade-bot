@@ -252,6 +252,8 @@ body.light .and-pill span{background:#dcfce7;color:#15803d}
       <span id="srv-txt">Server: not connected</span>
     </div>
     <div id="live-warning" style="display:none;font-size:11px;color:#dc2626;font-weight:600">⚠️ LIVE — Real funds at risk</div>
+    <button id="btn-test-conn" onclick="testConnection()" style="display:none;font-size:11px;padding:4px 11px;border-radius:6px;border:1px solid #1e2640;background:transparent;color:#94a3b8;cursor:pointer;font-family:inherit">🔌 Test Connection</button>
+    <div id="live-balance" style="display:none;font-size:11px;color:#4ade80;font-weight:600"></div>
   </div>
 
   <div class="metrics">
@@ -549,8 +551,10 @@ let portfolio    = 10000;
 let realPnl      = 0;
 let trades       = 0, wins = 0;
 let entryPrice   = null, posSize = 0, tpPrice = null, slPrice = null;
+let posCoinQty   = 0;    // actual coins bought — used for SELL in live mode
 let selectedLots = 1, currentLot = 0;
 let markers      = [];   // {idx, price, side:'B'|'S', label, win?}
+let liveBalance  = null; // USDT balance in live mode
 
 const S = {IDLE:'idle', BUYNEXT:'buynext', INPOS:'inpos'};
 let state    = S.IDLE;
@@ -726,7 +730,16 @@ function enterLong(price){
   log(`✅ BUY ไม้${currentLot}/${selectedLots} @ $${f(price)} | Size:$${posSize} | ${tpMsg} | ${slMsg}`,'buy');
   updateStratUI();
   updateOBar(price);
-  placeOrder(activeSym, 'BUY', posSize, price);
+  // Place order and save actual filled coin quantity for the SELL
+  placeOrder(activeSym, 'BUY', posSize, price).then(result => {
+    if (result && result.executedQty) {
+      posCoinQty = parseFloat(result.executedQty);
+      log(`  ↳ Filled: ${posCoinQty} ${activeSym}`,'info');
+    } else {
+      // fallback: estimate from price
+      posCoinQty = posSize / price;
+    }
+  });
 }
 
 function tpLabel(){ return `TP +${getTP()}%`; }
@@ -784,8 +797,9 @@ function exitPos(xp,reason){
   document.getElementById('m-upnl').textContent='—';
   document.getElementById('m-upnl').className='v';
 
-  // Fire real/paper SELL order before clearing state
-  placeOrder(activeSym, 'SELL', posSize, xp);
+  // Fire SELL using actual coin qty (not recalculated from USDT)
+  const sellQty = posCoinQty > 0 ? posCoinQty : posSize / xp;
+  placeOrder(activeSym, 'SELL', sellQty, xp, true);
 
   entryPrice=null; posSize=0; tpPrice=null; slPrice=null;
   document.getElementById('obar').style.display='none';
@@ -1576,33 +1590,102 @@ function setMode(m){
   document.getElementById('btn-live').className  = m==='live'?'active-live':'';
   document.getElementById('mode-badge').textContent = m==='paper'?'PAPER':'LIVE';
   document.getElementById('mode-badge').className   = m==='paper'?'badge b':'badge live-badge';
-  document.getElementById('live-warning').style.display = m==='live'?'block':'none';
+  document.getElementById('live-warning').style.display  = m==='live'?'block':'none';
+  document.getElementById('btn-test-conn').style.display = m==='live'?'block':'none';
+  if(m==='paper'){
+    document.getElementById('live-balance').style.display='none';
+    liveBalance=null;
+  }
   log(`Mode switched to ${m.toUpperCase()}`, m==='live'?'warn':'info');
   checkServer();
+  if(m==='live') testConnection();
+}
+
+async function testConnection(){
+  const dot  = document.getElementById('srv-dot');
+  const txt  = document.getElementById('srv-txt');
+  const bal  = document.getElementById('live-balance');
+  txt.textContent='Server: testing…';
+  try {
+    // 1. Check server status
+    const sr = await fetch(`${SERVER}/status`,{mode:'cors'});
+    const sd = await sr.json();
+    if(!sd.ok) throw new Error('Server not OK');
+    if(!sd.keysConfigured){
+      dot.style.background='#f59e0b';
+      txt.textContent='Server: connected — API keys missing in .env';
+      bal.style.display='none';
+      log('⚠️ Server running but no API keys found in .env — paper mode only','warn');
+      return;
+    }
+    // 2. Fetch account balance
+    const ar = await fetch(`${SERVER}/account`,{mode:'cors'});
+    const ad = await ar.json();
+    if(ad.error) throw new Error(ad.error);
+    dot.style.background='#22c55e';
+    txt.textContent=`Server: connected · LIVE · keys ✓`;
+    // Show USDT balance
+    const usdt = ad.balances?.find(b=>b.asset==='USDT');
+    if(usdt){
+      liveBalance = parseFloat(usdt.free);
+      bal.style.display='block';
+      bal.textContent=`💵 USDT: $${liveBalance.toFixed(2)}`;
+      log(`✓ Binance connected — USDT balance: $${liveBalance.toFixed(2)}`,'info');
+    } else {
+      bal.style.display='block';
+      bal.textContent='💵 No USDT balance';
+      log('✓ Binance connected — no USDT balance found','info');
+    }
+  } catch(err){
+    dot.style.background='#ef4444';
+    txt.textContent=`Connection failed: ${err.message}`;
+    bal.style.display='none';
+    log(`❌ Connection test failed: ${err.message}`,'warn');
+  }
 }
 
 // ── Place real order via local server ─────────────────────────────
-async function placeOrder(sym, side, usdtAmt, currentPrice){
-  const qty = (usdtAmt / currentPrice).toFixed(6);
-  const body = { symbol: sym+'USDT', side, type:'MARKET', quantity: qty };
+// isCoinQty=true  → qty is already in coin units (used for SELL)
+// isCoinQty=false → qty is USDT amount, divide by price to get coins
+async function placeOrder(sym, side, qty, currentPrice, isCoinQty=false){
+  const symbol = sym + 'USDT';
+
+  // Determine coin quantity
+  let coinQty = isCoinQty ? qty : qty / currentPrice;
 
   if(tradeMode === 'paper'){
-    // paper: just log it, no server call needed
-    log(`[PAPER] ${side} ${qty} ${sym} @ ~$${f(currentPrice)}`,'info');
-    return { paper:true, status:'FILLED', qty, price: currentPrice };
+    const displayQty = coinQty.toFixed(6);
+    log(`[PAPER] ${side} ${displayQty} ${sym} @ ~$${f(currentPrice)}`,'info');
+    return {
+      paper: true, status:'FILLED',
+      executedQty: String(displayQty),
+      fills: [{ price: String(currentPrice), qty: displayQty }],
+    };
   }
 
-  // live: send to local server which signs & forwards to Binance
+  // Live: fetch exchange info first to round qty correctly
   try {
+    let stepSize = '0.000001';
+    try {
+      const infoR = await fetch(`${SERVER}/exchangeinfo/${symbol}`, {mode:'cors'});
+      const info  = await infoR.json();
+      if(info.stepSize) stepSize = info.stepSize;
+    } catch(_) { /* use default stepSize */ }
+
+    // Round down to stepSize
+    const step = parseFloat(stepSize);
+    const decimals = (stepSize.split('.')[1]||'').replace(/0+$/,'').length;
+    coinQty = parseFloat((Math.floor(coinQty / step) * step).toFixed(decimals));
+
+    const body = { symbol, side, type:'MARKET', quantity: coinQty, price: currentPrice };
     const r = await fetch(`${SERVER}/order`, {
-      method:'POST',
-      mode:'cors',
+      method:'POST', mode:'cors',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify(body),
     });
     const d = await r.json();
     if(d.error) throw new Error(d.error);
-    log(`[LIVE] ${side} order placed: ${JSON.stringify(d)}`,'info');
+    log(`[LIVE] ${side} filled: ${d.executedQty||coinQty} ${sym} @ ~$${f(currentPrice)}`,'info');
     return d;
   } catch(err){
     log(`[LIVE] Order failed: ${err.message}`,'warn');
