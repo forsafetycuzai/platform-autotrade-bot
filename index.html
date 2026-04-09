@@ -225,6 +225,32 @@ body.light .and-pill span{background:#dcfce7;color:#15803d}
 
 /* OVERLAY */
 #strat-overlay{background:var(--overlay-bg)}
+#my-strats-overlay{background:var(--overlay-bg)}
+
+/* SAVED STRATEGY CARDS */
+.strat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:4px}
+.strat-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:8px;transition:border-color .15s;box-shadow:var(--shadow)}
+.strat-card:hover{border-color:#3b82f6}
+.strat-card-name{font-size:15px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.strat-card-desc{font-size:11px;color:var(--text3);line-height:1.5;min-height:16px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.strat-card-meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px}
+.strat-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;border:1px solid var(--border);color:var(--text3);background:var(--bg4)}
+.strat-tag.green{border-color:#16a34a;color:#4ade80;background:#0d2a0d}
+.strat-tag.blue{border-color:#3b82f6;color:#60a5fa;background:#0d1e3a}
+.strat-tag.purple{border-color:#7c3aed;color:#a78bfa;background:#1a0d3a}
+.strat-tag.red{border-color:#dc2626;color:#f87171;background:#2a0d0d}
+body.light .strat-tag.green{background:#dcfce7;color:#15803d}
+body.light .strat-tag.blue{background:#dbeafe;color:#1d4ed8}
+body.light .strat-tag.purple{background:#ede9fe;color:#6d28d9}
+body.light .strat-tag.red{background:#fee2e2;color:#b91c1c}
+.strat-card-footer{display:flex;gap:6px;margin-top:4px;align-items:center}
+.strat-card-date{font-size:10px;color:var(--text4);flex:1}
+.strat-load-btn{font-size:11px;padding:5px 13px;border-radius:7px;border:1px solid #3b82f6;background:#0d1e3a;color:#60a5fa;cursor:pointer;font-family:inherit;font-weight:600;transition:all .15s}
+.strat-load-btn:hover{background:#1e3a5f}
+body.light .strat-load-btn{background:#dbeafe;color:#1d4ed8}
+.strat-del-btn{font-size:11px;padding:5px 10px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--text4);cursor:pointer;font-family:inherit;transition:all .15s}
+.strat-del-btn:hover{border-color:#dc2626;color:#f87171}
+.strat-empty{text-align:center;padding:3rem 1rem;color:var(--text4);font-size:13px}
 </style>
 </head>
 <body>
@@ -345,8 +371,11 @@ body.light .and-pill span{background:#dcfce7;color:#15803d}
 
       <div class="card" style="text-align:center;padding:1.1rem">
         <div style="font-size:11px;color:#64748b;margin-bottom:4px" id="strat-summary">No strategy active</div>
-        <button onclick="openStratBuilder()" style="width:100%;font-size:13px;padding:9px;border-radius:8px;border:1px solid #3b82f6;color:#60a5fa;background:#0d1e3a;cursor:pointer;font-family:inherit;font-weight:600;transition:all .15s" onmouseover="this.style.background='#1e3a5f'" onmouseout="this.style.background='#0d1e3a'">
+        <button onclick="openStratBuilder()" style="width:100%;font-size:13px;padding:9px;border-radius:8px;border:1px solid #3b82f6;color:#60a5fa;background:#0d1e3a;cursor:pointer;font-family:inherit;font-weight:600;transition:all .15s;margin-bottom:6px" onmouseover="this.style.background='#1e3a5f'" onmouseout="this.style.background='#0d1e3a'">
           ⚡ Strategy Builder
+        </button>
+        <button onclick="openMyStrategies()" style="width:100%;font-size:12px;padding:7px;border-radius:8px;border:1px solid var(--border2);color:var(--text2);background:transparent;cursor:pointer;font-family:inherit;transition:all .15s" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background='transparent'">
+          📚 My Strategies <span id="my-strats-count" style="font-size:10px;color:var(--text3)"></span>
         </button>
       </div>
 
@@ -437,7 +466,10 @@ body.light .and-pill span{background:#dcfce7;color:#15803d}
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid #1e2640">
       <button onclick="closeStratBuilder()" style="font-size:13px;padding:7px 14px;border-radius:8px;border:1px solid #1e2640;background:transparent;color:#94a3b8;cursor:pointer;font-family:inherit">← Back</button>
       <h2 style="font-size:18px;font-weight:700;color:#f1f5f9">⚡ Strategy Builder</h2>
-      <button onclick="applyStrategy()" class="pri" style="margin-left:auto;font-size:13px;padding:8px 20px">✓ Apply Strategy</button>
+      <div style="display:flex;gap:8px;margin-left:auto">
+        <button onclick="saveStrategy()" style="font-size:13px;padding:8px 16px;border-radius:8px;border:1px solid #16a34a;background:#0d2a0d;color:#4ade80;cursor:pointer;font-family:inherit;font-weight:600">💾 Save</button>
+        <button onclick="applyStrategy()" class="pri" style="font-size:13px;padding:8px 20px">✓ Apply</button>
+      </div>
     </div>
 
     <!-- Crypto Selector -->
@@ -541,6 +573,29 @@ body.light .and-pill span{background:#dcfce7;color:#15803d}
     </div>
 
     <button onclick="applyStrategy()" class="pri" style="width:100%;font-size:14px;padding:12px">✓ Apply Strategy &amp; Start Bot</button>
+  </div>
+</div>
+
+<!-- ═══════ MY STRATEGIES OVERLAY ═══════ -->
+<div id="my-strats-overlay" style="display:none;position:fixed;inset:0;z-index:1100;overflow-y:auto;background:var(--overlay-bg)">
+  <div style="max-width:960px;margin:0 auto;padding:1.5rem">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)">
+      <button onclick="closeMyStrategies()" style="font-size:13px;padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:inherit">← Back</button>
+      <h2 style="font-size:18px;font-weight:700;color:var(--text)">📚 My Strategies</h2>
+      <span id="ms-count-badge" style="font-size:11px;color:var(--text3);background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:2px 9px"></span>
+      <button onclick="openStratBuilder();closeMyStrategies()" style="margin-left:auto;font-size:13px;padding:7px 16px;border-radius:8px;border:1px solid #3b82f6;background:#0d1e3a;color:#60a5fa;cursor:pointer;font-family:inherit;font-weight:600">+ New Strategy</button>
+    </div>
+
+    <!-- Search bar -->
+    <div style="margin-bottom:16px">
+      <input type="text" id="ms-search" oninput="renderMyStrategies()" placeholder="🔍  Search by name or description…"
+        style="width:100%;font-size:13px;padding:9px 12px;border:1px solid var(--border);border-radius:9px;background:var(--input-bg);color:var(--text);outline:none;font-family:inherit">
+    </div>
+
+    <!-- Cards grid -->
+    <div id="ms-grid" class="strat-grid"></div>
   </div>
 </div>
 
@@ -1915,6 +1970,187 @@ function toggleEMA(period){
   draw();
 }
 
+// ═══════════════════════════ MY STRATEGIES ════════════════════════
+const LS_KEY = 'cryptobot_strategies';
+
+function loadSavedStrategies(){
+  try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; }
+  catch(_){ return []; }
+}
+function persistStrategies(arr){
+  localStorage.setItem(LS_KEY, JSON.stringify(arr));
+  updateStratCountBadge();
+}
+function updateStratCountBadge(){
+  const arr = loadSavedStrategies();
+  const n = arr.length;
+  const badge = document.getElementById('my-strats-count');
+  const msBadge = document.getElementById('ms-count-badge');
+  if(badge) badge.textContent = n ? `(${n})` : '';
+  if(msBadge) msBadge.textContent = n ? `${n} saved` : 'none saved';
+}
+
+function saveStrategy(){
+  const name = (document.getElementById('strat-name').value || '').trim();
+  if(!name){ alert('Give your strategy a name before saving.'); return; }
+
+  const arr = loadSavedStrategies();
+
+  // Check for duplicate name — ask to overwrite
+  const existIdx = arr.findIndex(s => s.name === name);
+  if(existIdx !== -1){
+    if(!confirm(`"${name}" already exists. Overwrite it?`)) return;
+    arr.splice(existIdx, 1);
+  }
+
+  const strat = {
+    id:         Date.now(),
+    name,
+    desc:       (document.getElementById('strat-desc').value || '').trim(),
+    tf:         activeTF,
+    sym:        activeSym,
+    tradeAmt:   getAmt(),
+    lots:       selectedLots,
+    tpOn:       tpOn(),
+    tpPct:      getTP(),
+    slOn:       slOn(),
+    slPct:      +document.getElementById('sl-pct').value,
+    entryRules: JSON.parse(JSON.stringify(entryRules)),
+    exitRules:  JSON.parse(JSON.stringify(exitRules)),
+    savedAt:    new Date().toISOString(),
+  };
+
+  arr.unshift(strat);   // newest first
+  persistStrategies(arr);
+  log(`💾 Strategy "${name}" saved (${entryRules.length} entry, ${exitRules.length} exit rules).`, 'info');
+
+  // Flash the save button green
+  const btn = document.querySelector('[onclick="saveStrategy()"]');
+  if(btn){ const orig = btn.textContent; btn.textContent = '✓ Saved!'; setTimeout(()=>btn.textContent=orig, 1500); }
+}
+
+function deleteStrategy(id){
+  const arr = loadSavedStrategies();
+  const strat = arr.find(s => s.id === id);
+  if(!strat) return;
+  if(!confirm(`Delete "${strat.name}"?`)) return;
+  persistStrategies(arr.filter(s => s.id !== id));
+  renderMyStrategies();
+  log(`🗑 Strategy "${strat.name}" deleted.`, 'info');
+}
+
+function loadStrategy(id){
+  const arr = loadSavedStrategies();
+  const s = arr.find(s => s.id === id);
+  if(!s) return;
+
+  // Populate strategy builder fields
+  document.getElementById('strat-name').value = s.name;
+  document.getElementById('strat-desc').value  = s.desc || '';
+
+  // Timeframe
+  setActiveTF(s.tf || '5m');
+
+  // Trade amount & lots
+  const amtEl = document.getElementById('trade-amount');
+  if(amtEl) amtEl.value = s.tradeAmt || 100;
+  selectedLots = s.lots || 1;
+  document.querySelectorAll('.lot-btn').forEach(b => {
+    b.classList.toggle('active', +b.dataset.lots === selectedLots);
+  });
+  updateExp();
+
+  // TP
+  const tpOnEl = document.getElementById('tp-on');
+  const tpPctEl = document.getElementById('tp-pct');
+  if(tpOnEl){ tpOnEl.checked = s.tpOn !== false; tpOnEl.dispatchEvent(new Event('change')); }
+  if(tpPctEl){ tpPctEl.value = s.tpPct || 1; document.getElementById('tp-val').textContent = (s.tpPct||1)+'%'; }
+
+  // SL
+  const slOnEl = document.getElementById('sl-on');
+  const slPctEl = document.getElementById('sl-pct');
+  if(slOnEl){ slOnEl.checked = s.slOn !== false; slOnEl.dispatchEvent(new Event('change')); }
+  if(slPctEl){ slPctEl.value = s.slPct || 3; document.getElementById('sl-val').textContent = (s.slPct||3)+'%'; }
+
+  // Rules
+  ruleIdSeq = 0;
+  entryRules = (s.entryRules || []).map(r => ({...r, id: ruleIdSeq++}));
+  exitRules  = (s.exitRules  || []).map(r => ({...r, id: ruleIdSeq++}));
+
+  renderRules();
+  buildIfThenPreview();
+  closeMyStrategies();
+  openStratBuilder();
+  log(`📂 Loaded strategy "${s.name}".`, 'info');
+}
+
+function openMyStrategies(){
+  renderMyStrategies();
+  document.getElementById('my-strats-overlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+function closeMyStrategies(){
+  document.getElementById('my-strats-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function renderMyStrategies(){
+  const grid = document.getElementById('ms-grid');
+  if(!grid) return;
+
+  const query  = (document.getElementById('ms-search')?.value || '').toLowerCase();
+  const all    = loadSavedStrategies();
+  const list   = query
+    ? all.filter(s => s.name.toLowerCase().includes(query) || (s.desc||'').toLowerCase().includes(query))
+    : all;
+
+  updateStratCountBadge();
+
+  if(!list.length){
+    grid.innerHTML = `<div class="strat-empty" style="grid-column:1/-1">
+      ${query
+        ? `<div style="font-size:2rem;margin-bottom:8px">🔍</div><div>No strategies match "<b>${query}</b>"</div>`
+        : `<div style="font-size:2.5rem;margin-bottom:10px">📭</div>
+           <div style="font-size:15px;font-weight:600;color:var(--text2);margin-bottom:6px">No saved strategies yet</div>
+           <div>Open the Strategy Builder, build your rules, then click <b>💾 Save</b>.</div>`
+      }
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map(s => {
+    const date   = new Date(s.savedAt);
+    const dateStr= date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
+    const timeStr= date.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});
+    const eCount = s.entryRules?.length || 0;
+    const xCount = s.exitRules?.length  || 0;
+
+    return `
+    <div class="strat-card">
+      <div class="strat-card-name" title="${esc(s.name)}">${esc(s.name)}</div>
+      <div class="strat-card-desc">${s.desc ? esc(s.desc) : '<span style="color:var(--text4);font-style:italic">No description</span>'}</div>
+      <div class="strat-card-meta">
+        <span class="strat-tag blue">${s.sym || '?'}/USDT</span>
+        <span class="strat-tag">${s.tf || '5m'}</span>
+        <span class="strat-tag green">${eCount} entry rule${eCount!==1?'s':''}</span>
+        <span class="strat-tag red">${xCount} exit rule${xCount!==1?'s':''}</span>
+        <span class="strat-tag purple">$${s.tradeAmt||100} × ${s.lots||1} ไม้</span>
+        ${s.tpOn !== false ? `<span class="strat-tag green">TP ${s.tpPct||1}%</span>` : ''}
+        ${s.slOn !== false ? `<span class="strat-tag red">SL ${s.slPct||3}%</span>`   : ''}
+      </div>
+      <div class="strat-card-footer">
+        <span class="strat-card-date">💾 ${dateStr} ${timeStr}</span>
+        <button class="strat-del-btn" onclick="deleteStrategy(${s.id})">🗑</button>
+        <button class="strat-load-btn" onclick="loadStrategy(${s.id})">Load →</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function esc(str){
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 // ═══════════════════════════ TEST TRADE ═══════════════════════════
 function testTrade(){
   if(tradeMode !== 'paper'){
@@ -1948,6 +2184,7 @@ buildGrid();
 updateExp();
 updateStratUI();
 renderRules();
+updateStratCountBadge();
 log('Bot started — build your strategy using the Strategy Builder on the left.','info');
 log('Paper trading mode. Simulated data shown until Binance loads.','info');
 document.getElementById('clock').textContent=new Date().toLocaleTimeString();
